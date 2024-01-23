@@ -30,22 +30,34 @@ namespace Backend_api.Controllers
 
         public async Task<IActionResult> GetAsync()
         {
+            Stopwatch sw = Stopwatch.StartNew();
+            sw.Start();
             var task1 = new Task<int>(() =>
             {
                 Thread.Sleep(1000);
                 Console.WriteLine("Conexion a base de datos terminada");
-                return 9;
+                return 1;
+            });
+
+            var task2 = new Task<int>(() =>
+            {
+                Thread.Sleep(1000);
+                Console.WriteLine("Envio de mail terminado");
+                return 2;
             });
 
             task1.Start();
+            task2.Start();
 
             Console.WriteLine("hago otra cosa");
 
             var result =await task1;
+            var result2 = await task2;
 
             Console.WriteLine("Todo ha terminado");
+            sw.Stop();
 
-            return Ok(result);
+            return Ok(result+" "+result2+" "+sw.Elapsed);
         }
     }
 }
