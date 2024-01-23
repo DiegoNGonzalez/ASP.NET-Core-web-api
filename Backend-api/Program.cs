@@ -12,6 +12,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddKeyedSingleton<IRandomService, RandomService>("randomSingleton");
+builder.Services.AddKeyedScoped<IRandomService, RandomService>("randomScoped");
+builder.Services.AddKeyedTransient<IRandomService, RandomService>("randomTransient");
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
