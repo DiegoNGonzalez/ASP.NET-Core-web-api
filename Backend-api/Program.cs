@@ -18,6 +18,11 @@ builder.Services.AddKeyedTransient<IRandomService, RandomService>("randomTransie
 
 builder.Services.AddScoped<IPostsService, PostsService>();
 
+builder.Services.AddHttpClient<IPostsService, PostsService>(c=>
+{
+    c.BaseAddress = new Uri(builder.Configuration["BaseUrlPost"]);
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
