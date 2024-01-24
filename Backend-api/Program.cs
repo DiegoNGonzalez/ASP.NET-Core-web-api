@@ -1,4 +1,6 @@
+using Backend_api.Models;
 using Backend_api.Services;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,10 +19,16 @@ builder.Services.AddKeyedScoped<IRandomService, RandomService>("randomScoped");
 builder.Services.AddKeyedTransient<IRandomService, RandomService>("randomTransient");
 
 builder.Services.AddScoped<IPostsService, PostsService>();
-
+//HttpClient servicio jsonplaceholder
 builder.Services.AddHttpClient<IPostsService, PostsService>(c=>
 {
     c.BaseAddress = new Uri(builder.Configuration["BaseUrlPost"]);
+});
+
+//inyeccion base de datos entity framework
+builder.Services.AddDbContext<StoreContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("StoreConnection"));
 });
 
 var app = builder.Build();
