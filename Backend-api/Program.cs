@@ -16,6 +16,8 @@ builder.Services.AddKeyedSingleton<IRandomService, RandomService>("randomSinglet
 builder.Services.AddKeyedScoped<IRandomService, RandomService>("randomScoped");
 builder.Services.AddKeyedTransient<IRandomService, RandomService>("randomTransient");
 
+builder.Services.AddScoped<IPostsService, PostsService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
