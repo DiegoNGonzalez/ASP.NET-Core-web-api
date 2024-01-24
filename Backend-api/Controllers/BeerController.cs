@@ -18,8 +18,8 @@ namespace Backend_api.Controllers
             _context = context;
         }
         [HttpGet]
-        public async Task<IEnumerable<BeerDto>> Get() => 
-            await _context.Beers.Select(b=> new BeerDto
+        public async Task<IEnumerable<BeerDto>> Get() =>
+            await _context.Beers.Select(b => new BeerDto
             {
                 Id = b.BeerId,
                 Name = b.Name,
@@ -36,7 +36,7 @@ namespace Backend_api.Controllers
                 return NotFound();
             }
 
-            var beerDto= new BeerDto
+            var beerDto = new BeerDto
             {
                 Id = beer.BeerId,
                 Name = beer.Name,
@@ -46,6 +46,31 @@ namespace Backend_api.Controllers
 
             return Ok(beerDto);
         }
+
+        [HttpPost]
+
+        public async Task<ActionResult<BeerDto>> Add(BeerInsertDto beerInsertDto)
+        {
+            var beer = new Beer
+            {
+                Name = beerInsertDto.Name,
+                Alcohol = beerInsertDto.Alcohol,
+                BrandId = beerInsertDto.BrandId
+            };
+
+            await _context.Beers.AddAsync(beer);
+            await _context.SaveChangesAsync();
+
+            var beerDto = new BeerDto
+            {
+                Id = beer.BeerId,
+                Name = beer.Name,
+                Alcohol = beer.Alcohol,
+                BrandId = beer.BrandId
+            };
+
+            return CreatedAtAction(nameof(GetById), new { id = beer.BeerId }, beerDto);
+        }
     }
-   
+
 }
