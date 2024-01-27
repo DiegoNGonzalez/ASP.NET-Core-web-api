@@ -1,5 +1,8 @@
+using Backend_api.DTOs;
 using Backend_api.Models;
 using Backend_api.Services;
+using Backend_api.Validators;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,6 +33,10 @@ builder.Services.AddDbContext<StoreContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("StoreConnection"));
 });
+
+//Validators
+
+builder.Services.AddScoped<IValidator<BeerInsertDto>, BeerInsertValidator>();
 
 var app = builder.Build();
 
